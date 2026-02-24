@@ -10,17 +10,29 @@ const setupSocket = require('./socket');
 const app = express();
 const server = http.createServer(app);
 
+// Allowed origins
+const allowedOrigins = [
+    process.env.CLIENT_URL || 'http://localhost:5173',
+    'https://studyhive-five.vercel.app'
+].filter(Boolean);
+
 // Socket.io setup
 const io = new Server(server, {
     cors: {
-        origin: process.env.CLIENT_URL || 'http://localhost:5173',
+        origin: allowedOrigins,
         methods: ['GET', 'POST']
     }
 });
 
 // Middleware
 app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(null, true); // Allow all in dev; tighten for production
+        }
+    },
     credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));
