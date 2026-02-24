@@ -59,7 +59,7 @@ setupSocket(io);
 const PORT = process.env.PORT || 5000;
 
 connectDB().then(() => {
-    server.listen(PORT, () => {
+    server.listen(PORT, '0.0.0.0', () => {
         console.log(`🐝 StudyHive server running on port ${PORT}`);
     });
 }).catch(err => {

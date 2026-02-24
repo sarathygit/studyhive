@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: studyhive-backend
+    runtime: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGODB_URI
+        sync: false
+      - key: CLIENT_URL
+        value: https://studyhive-five.vercel.app
+      - key: AI_API_KEY
+        sync: false
