@@ -14,6 +14,10 @@ router.post('/signup', async (req, res) => {
     try {
         const { username, email, password, subjects } = req.body;
 
+        if (!username || !email || !password) {
+            return res.status(400).json({ message: 'Username, email, and password are required' });
+        }
+
         // Check existing user
         const existingUser = await User.findOne({ $or: [{ email }, { username }] });
         if (existingUser) {
@@ -28,6 +32,11 @@ router.post('/signup', async (req, res) => {
         const token = generateToken(user._id);
         res.status(201).json({ token, user });
     } catch (error) {
+        console.error('Signup error:', error);
+        if (error.name === 'ValidationError') {
+            const messages = Object.values(error.errors).map(e => e.message);
+            return res.status(400).json({ message: messages.join(', ') });
+        }
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
