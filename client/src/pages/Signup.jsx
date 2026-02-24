@@ -45,10 +45,12 @@ export default function Signup() {
         <div className="min-h-screen flex">
             {/* Left Panel */}
             <div className="hidden lg:flex lg:w-1/2 gradient-bg relative overflow-hidden items-center justify-center">
-                <div className="absolute inset-0 bg-black/10" />
+                <div className="absolute inset-0 bg-black/5" />
                 <div className="relative z-10 text-center px-12">
-                    <div className="text-8xl mb-6">🐝</div>
-                    <h1 className="text-5xl font-display font-bold text-white mb-4">Join the Hive</h1>
+                    <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <span className="text-white text-2xl font-bold">SH</span>
+                    </div>
+                    <h1 className="text-5xl font-display font-bold text-white mb-4">Join StudyHive</h1>
                     <p className="text-xl text-white/80 max-w-md mx-auto leading-relaxed">
                         Create your account and start studying smarter with collaborative tools and AI-powered learning.
                     </p>
@@ -58,17 +60,19 @@ export default function Signup() {
             </div>
 
             {/* Right Panel */}
-            <div className="flex-1 flex items-center justify-center p-8 overflow-y-auto">
+            <div className="flex-1 flex items-center justify-center p-8 overflow-y-auto bg-white dark:bg-slate-900">
                 <div className="w-full max-w-md animate-fade-in">
                     <div className="lg:hidden text-center mb-8">
-                        <span className="text-5xl">🐝</span>
-                        <h1 className="text-3xl font-display font-bold gradient-text mt-2">StudyHive</h1>
+                        <div className="w-12 h-12 bg-brand-600 rounded-xl flex items-center justify-center mx-auto mb-3">
+                            <span className="text-white text-lg font-bold">SH</span>
+                        </div>
+                        <h1 className="text-3xl font-display font-bold gradient-text">StudyHive</h1>
                     </div>
 
-                    <h2 className="text-3xl font-display font-bold text-dark-900 dark:text-white mb-2">
+                    <h2 className="text-3xl font-display font-bold text-slate-900 dark:text-white mb-2">
                         Create your account
                     </h2>
-                    <p className="text-dark-500 dark:text-dark-400 mb-8">
+                    <p className="text-slate-500 dark:text-slate-400 mb-8">
                         Join thousands of students studying together
                     </p>
 
@@ -80,7 +84,7 @@ export default function Signup() {
 
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div>
-                            <label className="block text-sm font-medium text-dark-700 dark:text-dark-300 mb-2">Username</label>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Username</label>
                             <input
                                 type="text"
                                 value={form.username}
@@ -93,7 +97,7 @@ export default function Signup() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-dark-700 dark:text-dark-300 mb-2">Email</label>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email</label>
                             <input
                                 type="email"
                                 value={form.email}
@@ -106,7 +110,7 @@ export default function Signup() {
 
                         <div className="grid grid-cols-2 gap-3">
                             <div>
-                                <label className="block text-sm font-medium text-dark-700 dark:text-dark-300 mb-2">Password</label>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Password</label>
                                 <input
                                     type="password"
                                     value={form.password}
@@ -117,7 +121,7 @@ export default function Signup() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-dark-700 dark:text-dark-300 mb-2">Confirm</label>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Confirm</label>
                                 <input
                                     type="password"
                                     value={form.confirmPassword}
@@ -130,7 +134,7 @@ export default function Signup() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-dark-700 dark:text-dark-300 mb-3">
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
                                 Subjects of Interest
                             </label>
                             <div className="flex flex-wrap gap-2">
@@ -140,8 +144,8 @@ export default function Signup() {
                                         type="button"
                                         onClick={() => toggleSubject(subject)}
                                         className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${subjects.includes(subject)
-                                                ? 'bg-honey-500 text-white shadow-md shadow-honey-500/25'
-                                                : 'bg-dark-100 dark:bg-dark-800 text-dark-600 dark:text-dark-300 hover:bg-dark-200 dark:hover:bg-dark-700'
+                                            ? 'bg-brand-600 text-white shadow-sm'
+                                            : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
                                             }`}
                                     >
                                         {subject}
@@ -164,9 +168,9 @@ export default function Signup() {
                         </button>
                     </form>
 
-                    <p className="mt-6 text-center text-dark-500 dark:text-dark-400">
+                    <p className="mt-6 text-center text-slate-500 dark:text-slate-400">
                         Already have an account?{' '}
-                        <Link to="/login" className="text-honey-600 dark:text-honey-400 font-medium hover:underline">
+                        <Link to="/login" className="text-brand-600 dark:text-brand-400 font-medium hover:underline">
                             Sign in
                         </Link>
                     </p>

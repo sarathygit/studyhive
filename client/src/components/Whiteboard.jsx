@@ -1,14 +1,14 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 import { useSocket } from '../context/SocketContext';
 
-const COLORS = ['#f59e0b', '#ef4444', '#3b82f6', '#10b981', '#8b5cf6', '#ec4899', '#06b6d4', '#f97316'];
+const COLORS = ['#2563eb', '#ef4444', '#10b981', '#8b5cf6', '#ec4899', '#f59e0b', '#06b6d4', '#f97316'];
 
 export default function Whiteboard({ roomId }) {
     const canvasRef = useRef(null);
     const [isDrawing, setIsDrawing] = useState(false);
-    const [color, setColor] = useState('#f59e0b');
+    const [color, setColor] = useState('#2563eb');
     const [strokeWidth, setStrokeWidth] = useState(3);
-    const [tool, setTool] = useState('draw'); // draw, erase
+    const [tool, setTool] = useState('draw');
     const [strokes, setStrokes] = useState([]);
     const currentStroke = useRef([]);
     const { socket } = useSocket();
@@ -96,7 +96,7 @@ export default function Whiteboard({ roomId }) {
         ctx.lineWidth = tool === 'erase' ? strokeWidth * 4 : strokeWidth;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
-        ctx.strokeStyle = tool === 'erase' ? '#1a1b21' : color;
+        ctx.strokeStyle = tool === 'erase' ? '#0f172a' : color;
         ctx.globalCompositeOperation = tool === 'erase' ? 'destination-out' : 'source-over';
 
         ctx.lineTo(pos.x, pos.y);
@@ -174,25 +174,25 @@ export default function Whiteboard({ roomId }) {
     return (
         <div className="flex flex-col h-full">
             {/* Toolbar */}
-            <div className="flex items-center gap-3 p-3 border-b border-dark-100 dark:border-dark-800 flex-wrap">
+            <div className="flex items-center gap-3 p-3 border-b border-slate-200 dark:border-slate-800 flex-wrap">
                 <div className="flex gap-1">
                     <button
                         onClick={() => setTool('draw')}
-                        className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${tool === 'draw' ? 'bg-honey-500 text-white' : 'bg-dark-100 dark:bg-dark-800 text-dark-600 dark:text-dark-300'
+                        className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${tool === 'draw' ? 'bg-brand-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
                             }`}
                     >
-                        ✏️ Draw
+                        Draw
                     </button>
                     <button
                         onClick={() => setTool('erase')}
-                        className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${tool === 'erase' ? 'bg-honey-500 text-white' : 'bg-dark-100 dark:bg-dark-800 text-dark-600 dark:text-dark-300'
+                        className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${tool === 'erase' ? 'bg-brand-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
                             }`}
                     >
-                        🧹 Erase
+                        Erase
                     </button>
                 </div>
 
-                <div className="h-6 w-px bg-dark-200 dark:bg-dark-700" />
+                <div className="h-6 w-px bg-slate-200 dark:bg-slate-700" />
 
                 {/* Colors */}
                 <div className="flex gap-1.5">
@@ -200,14 +200,14 @@ export default function Whiteboard({ roomId }) {
                         <button
                             key={c}
                             onClick={() => { setColor(c); setTool('draw'); }}
-                            className={`w-7 h-7 rounded-full border-2 transition-transform ${color === c && tool === 'draw' ? 'border-dark-900 dark:border-white scale-110' : 'border-transparent'
+                            className={`w-7 h-7 rounded-full border-2 transition-transform ${color === c && tool === 'draw' ? 'border-slate-900 dark:border-white scale-110' : 'border-transparent'
                                 }`}
                             style={{ backgroundColor: c }}
                         />
                     ))}
                 </div>
 
-                <div className="h-6 w-px bg-dark-200 dark:bg-dark-700" />
+                <div className="h-6 w-px bg-slate-200 dark:bg-slate-700" />
 
                 {/* Stroke Width */}
                 <input
@@ -216,17 +216,17 @@ export default function Whiteboard({ roomId }) {
                     max="10"
                     value={strokeWidth}
                     onChange={(e) => setStrokeWidth(parseInt(e.target.value))}
-                    className="w-20 accent-honey-500"
+                    className="w-20 accent-brand-500"
                 />
 
                 <div className="flex-1" />
 
-                <button onClick={handleUndo} className="btn-ghost text-sm">↩ Undo</button>
-                <button onClick={handleClear} className="btn-ghost text-sm text-red-500 hover:text-red-600">🗑 Clear</button>
+                <button onClick={handleUndo} className="btn-ghost text-sm">Undo</button>
+                <button onClick={handleClear} className="btn-ghost text-sm text-red-500 hover:text-red-600">Clear</button>
             </div>
 
             {/* Canvas */}
-            <div className="flex-1 bg-white dark:bg-dark-950 cursor-crosshair relative">
+            <div className="flex-1 bg-white dark:bg-slate-950 cursor-crosshair relative">
                 <canvas
                     ref={canvasRef}
                     onMouseDown={startDrawing}

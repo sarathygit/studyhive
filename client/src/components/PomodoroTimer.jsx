@@ -51,9 +51,8 @@ export default function PomodoroTimer({ roomId }) {
 
         if (mode === 'focus') {
             setSessions(prev => prev + 1);
-            addNotification({ type: 'success', message: '🎉 Focus session complete! Take a break.' });
+            addNotification({ type: 'success', message: 'Focus session complete! Take a break.' });
 
-            // Record focus session
             try {
                 const res = await api.post('/focus', { duration: 25, roomId, completed: true });
                 if (res.data.user) updateUser(res.data.user);
@@ -64,7 +63,7 @@ export default function PomodoroTimer({ roomId }) {
             setMode('break');
             setTimeLeft(BREAK_TIME);
         } else {
-            addNotification({ type: 'info', message: '⏰ Break is over! Ready to focus?' });
+            addNotification({ type: 'info', message: 'Break is over! Ready to focus?' });
             setMode('focus');
             setTimeLeft(FOCUS_TIME);
         }
@@ -102,10 +101,10 @@ export default function PomodoroTimer({ roomId }) {
 
     return (
         <div className="card p-5">
-            <h3 className="text-sm font-display font-bold text-dark-700 dark:text-dark-300 mb-4 flex items-center gap-2">
-                ⏱️ Pomodoro Timer
-                <span className={`badge text-[10px] ${mode === 'focus' ? 'badge-honey' : 'badge-hive'}`}>
-                    {mode === 'focus' ? '🎯 Focus' : '☕ Break'}
+            <h3 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                Pomodoro Timer
+                <span className={`badge text-[10px] ${mode === 'focus' ? 'badge-brand' : 'badge-accent'}`}>
+                    {mode === 'focus' ? 'Focus' : 'Break'}
                 </span>
             </h3>
 
@@ -113,17 +112,17 @@ export default function PomodoroTimer({ roomId }) {
             <div className="relative w-40 h-40 mx-auto mb-5">
                 <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
                     <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="4"
-                        className="text-dark-100 dark:text-dark-800" />
+                        className="text-slate-100 dark:text-slate-800" />
                     <circle cx="50" cy="50" r="45" fill="none" strokeWidth="4" strokeLinecap="round"
                         strokeDasharray={`${progress * 2.827} ${283 - progress * 2.827}`}
-                        className={mode === 'focus' ? 'text-honey-500' : 'text-hive-500'}
+                        className={mode === 'focus' ? 'text-brand-500' : 'text-brand-400'}
                         style={{ transition: 'stroke-dasharray 0.5s ease' }} />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-3xl font-display font-bold text-dark-900 dark:text-white">
+                    <span className="text-3xl font-display font-bold text-slate-900 dark:text-white">
                         {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
                     </span>
-                    <span className="text-xs text-dark-500 dark:text-dark-400 mt-1">
+                    <span className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                         Session #{sessions + 1}
                     </span>
                 </div>
@@ -133,21 +132,21 @@ export default function PomodoroTimer({ roomId }) {
             <div className="flex items-center justify-center gap-2">
                 {!isRunning ? (
                     <button onClick={handleStart} className="btn-primary text-sm px-6">
-                        ▶ Start
+                        Start
                     </button>
                 ) : (
                     <button onClick={handlePause} className="btn-secondary text-sm px-6">
-                        ⏸ Pause
+                        Pause
                     </button>
                 )}
                 <button onClick={handleReset} className="btn-ghost text-sm">
-                    ↻ Reset
+                    Reset
                 </button>
             </div>
 
             {sessions > 0 && (
-                <p className="text-center text-xs text-dark-500 dark:text-dark-400 mt-3">
-                    ✅ {sessions} session{sessions > 1 ? 's' : ''} completed today
+                <p className="text-center text-xs text-slate-500 dark:text-slate-400 mt-3">
+                    {sessions} session{sessions > 1 ? 's' : ''} completed today
                 </p>
             )}
         </div>

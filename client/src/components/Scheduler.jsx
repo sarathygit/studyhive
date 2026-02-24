@@ -68,8 +68,8 @@ export default function Scheduler({ roomId }) {
     return (
         <div className="p-4 space-y-4 overflow-y-auto h-full">
             <div className="flex items-center justify-between">
-                <h3 className="text-lg font-display font-bold text-dark-900 dark:text-white flex items-center gap-2">
-                    📅 Study Sessions
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wider">
+                    Study Sessions
                 </h3>
                 <button onClick={() => setShowForm(!showForm)} className="btn-primary text-xs">
                     + Schedule
@@ -94,7 +94,7 @@ export default function Scheduler({ roomId }) {
                     />
                     <div className="grid grid-cols-2 gap-3">
                         <div>
-                            <label className="text-xs font-medium text-dark-500 dark:text-dark-400 mb-1 block">Date & Time</label>
+                            <label className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 block">Date & Time</label>
                             <input
                                 type="datetime-local"
                                 value={form.scheduledAt}
@@ -104,7 +104,7 @@ export default function Scheduler({ roomId }) {
                             />
                         </div>
                         <div>
-                            <label className="text-xs font-medium text-dark-500 dark:text-dark-400 mb-1 block">Duration (min)</label>
+                            <label className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 block">Duration (min)</label>
                             <input
                                 type="number"
                                 value={form.duration}
@@ -116,7 +116,7 @@ export default function Scheduler({ roomId }) {
                         </div>
                     </div>
                     <div className="flex gap-2">
-                        <button type="submit" className="btn-primary text-sm">📅 Schedule</button>
+                        <button type="submit" className="btn-primary text-sm">Schedule</button>
                         <button type="button" onClick={() => setShowForm(false)} className="btn-ghost text-sm">Cancel</button>
                     </div>
                 </form>
@@ -126,15 +126,17 @@ export default function Scheduler({ roomId }) {
                 <div className="space-y-3">
                     {[1, 2].map(i => (
                         <div key={i} className="animate-pulse card p-4">
-                            <div className="h-4 bg-dark-200 dark:bg-dark-700 rounded w-3/4 mb-2" />
-                            <div className="h-3 bg-dark-200 dark:bg-dark-700 rounded w-1/2" />
+                            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4 mb-2" />
+                            <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-1/2" />
                         </div>
                     ))}
                 </div>
             ) : sessions.length === 0 ? (
-                <div className="text-center py-8 text-dark-400 dark:text-dark-500">
-                    <span className="text-4xl">📅</span>
-                    <p className="text-sm mt-2">No upcoming sessions</p>
+                <div className="text-center py-8 text-slate-400 dark:text-slate-500">
+                    <div className="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <span className="text-slate-400 text-sm">S</span>
+                    </div>
+                    <p className="text-sm">No upcoming sessions</p>
                 </div>
             ) : (
                 <div className="space-y-3">
@@ -142,29 +144,29 @@ export default function Scheduler({ roomId }) {
                         <div key={session._id} className="card p-4 animate-fade-in">
                             <div className="flex items-start justify-between">
                                 <div>
-                                    <p className="font-medium text-sm text-dark-900 dark:text-white">{session.title}</p>
-                                    <p className="text-xs text-dark-500 dark:text-dark-400 mt-1">
-                                        🕐 {formatDate(session.scheduledAt)} · {session.duration}min
+                                    <p className="font-medium text-sm text-slate-900 dark:text-white">{session.title}</p>
+                                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                        {formatDate(session.scheduledAt)} · {session.duration}min
                                     </p>
                                     {session.description && (
-                                        <p className="text-xs text-dark-500 dark:text-dark-400 mt-1">{session.description}</p>
+                                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{session.description}</p>
                                     )}
                                 </div>
                                 {session.createdBy?._id === user?._id && (
-                                    <button onClick={() => handleDelete(session._id)} className="text-dark-400 hover:text-red-500 text-xs">
-                                        🗑
+                                    <button onClick={() => handleDelete(session._id)} className="text-slate-400 hover:text-red-500 text-xs">
+                                        Delete
                                     </button>
                                 )}
                             </div>
                             <div className="flex items-center justify-between mt-3">
                                 <div className="flex -space-x-2">
                                     {session.participants?.slice(0, 5).map((p, i) => (
-                                        <div key={i} className="w-7 h-7 rounded-full gradient-bg flex items-center justify-center text-white text-[10px] font-bold border-2 border-white dark:border-dark-900">
+                                        <div key={i} className="w-7 h-7 rounded-full bg-brand-600 flex items-center justify-center text-white text-[10px] font-semibold border-2 border-white dark:border-slate-900">
                                             {p.username?.[0]?.toUpperCase()}
                                         </div>
                                     ))}
                                     {session.participants?.length > 5 && (
-                                        <div className="w-7 h-7 rounded-full bg-dark-200 dark:bg-dark-700 flex items-center justify-center text-[10px] font-bold border-2 border-white dark:border-dark-900">
+                                        <div className="w-7 h-7 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-semibold border-2 border-white dark:border-slate-900">
                                             +{session.participants.length - 5}
                                         </div>
                                     )}

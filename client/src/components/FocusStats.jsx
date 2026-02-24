@@ -28,8 +28,8 @@ export default function FocusStats() {
         return (
             <div className="card p-5">
                 <div className="animate-pulse space-y-3">
-                    <div className="h-4 bg-dark-200 dark:bg-dark-700 rounded w-1/2" />
-                    <div className="h-32 bg-dark-200 dark:bg-dark-700 rounded" />
+                    <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/2" />
+                    <div className="h-32 bg-slate-200 dark:bg-slate-700 rounded" />
                 </div>
             </div>
         );
@@ -43,8 +43,8 @@ export default function FocusStats() {
         datasets: [{
             label: 'Focus Time (min)',
             data: stats?.daily?.map(d => d.totalDuration) || [],
-            backgroundColor: 'rgba(249, 160, 7, 0.7)',
-            borderColor: '#f9a007',
+            backgroundColor: 'rgba(37, 99, 235, 0.6)',
+            borderColor: '#2563eb',
             borderWidth: 1,
             borderRadius: 6,
         }]
@@ -56,7 +56,7 @@ export default function FocusStats() {
         plugins: {
             legend: { display: false },
             tooltip: {
-                backgroundColor: '#1a1b21',
+                backgroundColor: '#0f172a',
                 titleColor: '#fff',
                 bodyColor: '#fff',
                 padding: 10,
@@ -66,7 +66,7 @@ export default function FocusStats() {
         scales: {
             y: {
                 beginAtZero: true,
-                grid: { color: 'rgba(0,0,0,0.05)' },
+                grid: { color: 'rgba(0,0,0,0.04)' },
                 ticks: { font: { size: 10 } }
             },
             x: {
@@ -78,23 +78,23 @@ export default function FocusStats() {
 
     return (
         <div className="card p-5">
-            <h3 className="text-sm font-display font-bold text-dark-700 dark:text-dark-300 mb-4 flex items-center gap-2">
-                📊 Focus Stats
+            <h3 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">
+                Focus Stats
             </h3>
 
             {/* Today's Stats */}
             <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="bg-honey-50 dark:bg-honey-900/20 rounded-xl p-3 text-center">
-                    <p className="text-2xl font-bold text-honey-600 dark:text-honey-400">
+                <div className="bg-brand-50 dark:bg-brand-900/20 rounded-xl p-3 text-center">
+                    <p className="text-2xl font-bold text-brand-600 dark:text-brand-400">
                         {stats?.today?.totalDuration || 0}
                     </p>
-                    <p className="text-[10px] text-dark-500 dark:text-dark-400 mt-1">Min Today</p>
+                    <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1">Min Today</p>
                 </div>
-                <div className="bg-hive-50 dark:bg-hive-900/20 rounded-xl p-3 text-center">
-                    <p className="text-2xl font-bold text-hive-600 dark:text-hive-400">
+                <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-3 text-center">
+                    <p className="text-2xl font-bold text-slate-700 dark:text-slate-300">
                         {stats?.user?.focusScore || 0}
                     </p>
-                    <p className="text-[10px] text-dark-500 dark:text-dark-400 mt-1">Focus Score</p>
+                    <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1">Focus Score</p>
                 </div>
             </div>
 
@@ -103,8 +103,8 @@ export default function FocusStats() {
                 {stats?.daily?.length > 0 ? (
                     <Bar data={chartData} options={chartOptions} />
                 ) : (
-                    <div className="flex items-center justify-center h-full text-dark-400 dark:text-dark-500 text-sm">
-                        No data yet. Complete focus sessions to see stats!
+                    <div className="flex items-center justify-center h-full text-slate-400 dark:text-slate-500 text-sm">
+                        No data yet. Complete focus sessions to see stats.
                     </div>
                 )}
             </div>
@@ -112,11 +112,11 @@ export default function FocusStats() {
             {/* Badges */}
             {stats?.user?.badges?.length > 0 && (
                 <div className="mt-4">
-                    <p className="text-xs font-medium text-dark-500 dark:text-dark-400 mb-2">Badges</p>
+                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">Badges</p>
                     <div className="flex flex-wrap gap-2">
                         {stats.user.badges.map((badge, i) => (
-                            <span key={i} className="badge-honey text-xs">
-                                {badge.icon} {badge.name}
+                            <span key={i} className="badge-brand text-xs">
+                                {badge.name}
                             </span>
                         ))}
                     </div>

@@ -26,49 +26,60 @@ export default function Login() {
         <div className="min-h-screen flex">
             {/* Left Panel - Branding */}
             <div className="hidden lg:flex lg:w-1/2 gradient-bg relative overflow-hidden items-center justify-center">
-                <div className="absolute inset-0 bg-black/10" />
+                <div className="absolute inset-0 bg-black/5" />
                 <div className="relative z-10 text-center px-12">
-                    <div className="text-8xl mb-6">🐝</div>
+                    <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <span className="text-white text-2xl font-bold">SH</span>
+                    </div>
                     <h1 className="text-5xl font-display font-bold text-white mb-4">StudyHive</h1>
                     <p className="text-xl text-white/80 max-w-md mx-auto leading-relaxed">
                         Study together, learn smarter. Join collaborative study rooms and boost your productivity.
                     </p>
                     <div className="mt-10 flex items-center justify-center gap-8 text-white/70">
                         <div className="text-center">
-                            <div className="text-3xl font-bold text-white">🎯</div>
-                            <p className="text-sm mt-1">Focus Timer</p>
+                            <div className="w-10 h-10 bg-white/15 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                <span className="text-white text-sm font-semibold">T</span>
+                            </div>
+                            <p className="text-sm">Focus Timer</p>
                         </div>
                         <div className="text-center">
-                            <div className="text-3xl font-bold text-white">💬</div>
-                            <p className="text-sm mt-1">Group Chat</p>
+                            <div className="w-10 h-10 bg-white/15 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                <span className="text-white text-sm font-semibold">C</span>
+                            </div>
+                            <p className="text-sm">Group Chat</p>
                         </div>
                         <div className="text-center">
-                            <div className="text-3xl font-bold text-white">🎨</div>
-                            <p className="text-sm mt-1">Whiteboard</p>
+                            <div className="w-10 h-10 bg-white/15 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                <span className="text-white text-sm font-semibold">W</span>
+                            </div>
+                            <p className="text-sm">Whiteboard</p>
                         </div>
                         <div className="text-center">
-                            <div className="text-3xl font-bold text-white">🧠</div>
-                            <p className="text-sm mt-1">AI Quizzes</p>
+                            <div className="w-10 h-10 bg-white/15 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                <span className="text-white text-sm font-semibold">Q</span>
+                            </div>
+                            <p className="text-sm">AI Quizzes</p>
                         </div>
                     </div>
                 </div>
-                {/* Decorative hexagons */}
                 <div className="absolute -top-20 -right-20 w-64 h-64 bg-white/5 rounded-3xl rotate-45" />
                 <div className="absolute -bottom-20 -left-10 w-48 h-48 bg-white/5 rounded-3xl rotate-12" />
             </div>
 
             {/* Right Panel - Form */}
-            <div className="flex-1 flex items-center justify-center p-8">
+            <div className="flex-1 flex items-center justify-center p-8 bg-white dark:bg-slate-900">
                 <div className="w-full max-w-md animate-fade-in">
                     <div className="lg:hidden text-center mb-8">
-                        <span className="text-5xl">🐝</span>
-                        <h1 className="text-3xl font-display font-bold gradient-text mt-2">StudyHive</h1>
+                        <div className="w-12 h-12 bg-brand-600 rounded-xl flex items-center justify-center mx-auto mb-3">
+                            <span className="text-white text-lg font-bold">SH</span>
+                        </div>
+                        <h1 className="text-3xl font-display font-bold gradient-text">StudyHive</h1>
                     </div>
 
-                    <h2 className="text-3xl font-display font-bold text-dark-900 dark:text-white mb-2">
-                        Welcome back!
+                    <h2 className="text-3xl font-display font-bold text-slate-900 dark:text-white mb-2">
+                        Welcome back
                     </h2>
-                    <p className="text-dark-500 dark:text-dark-400 mb-8">
+                    <p className="text-slate-500 dark:text-slate-400 mb-8">
                         Sign in to continue your study sessions
                     </p>
 
@@ -80,7 +91,7 @@ export default function Login() {
 
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div>
-                            <label className="block text-sm font-medium text-dark-700 dark:text-dark-300 mb-2">Email</label>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email</label>
                             <input
                                 type="email"
                                 value={email}
@@ -92,7 +103,7 @@ export default function Login() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-dark-700 dark:text-dark-300 mb-2">Password</label>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Password</label>
                             <input
                                 type="password"
                                 value={password}
@@ -117,9 +128,9 @@ export default function Login() {
                         </button>
                     </form>
 
-                    <p className="mt-6 text-center text-dark-500 dark:text-dark-400">
+                    <p className="mt-6 text-center text-slate-500 dark:text-slate-400">
                         Don't have an account?{' '}
-                        <Link to="/signup" className="text-honey-600 dark:text-honey-400 font-medium hover:underline">
+                        <Link to="/signup" className="text-brand-600 dark:text-brand-400 font-medium hover:underline">
                             Sign up
                         </Link>
                     </p>

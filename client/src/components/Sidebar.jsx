@@ -46,25 +46,25 @@ export default function Sidebar({ rooms, activeRoom, onSelectRoom, onRoomCreated
     };
 
     return (
-        <div className="w-72 bg-white dark:bg-dark-900 border-r border-dark-100 dark:border-dark-800 flex flex-col h-full">
+        <div className="w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col h-full">
             {/* Header */}
-            <div className="p-4 border-b border-dark-100 dark:border-dark-800">
-                <h2 className="text-lg font-display font-bold text-dark-900 dark:text-white flex items-center gap-2">
-                    📚 Study Rooms
+            <div className="p-4 border-b border-slate-200 dark:border-slate-800">
+                <h2 className="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wider">
+                    Study Rooms
                 </h2>
                 <div className="flex gap-2 mt-3">
                     <button onClick={() => { setShowCreate(true); setShowJoin(false); }} className="btn-primary text-xs flex-1 py-2">
                         + Create
                     </button>
                     <button onClick={() => { setShowJoin(true); setShowCreate(false); }} className="btn-secondary text-xs flex-1 py-2">
-                        🔗 Join
+                        Join
                     </button>
                 </div>
             </div>
 
             {/* Create Modal */}
             {showCreate && (
-                <div className="p-4 border-b border-dark-100 dark:border-dark-800 bg-honey-50/50 dark:bg-honey-900/10 animate-slide-up">
+                <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-brand-50/50 dark:bg-brand-900/10 animate-slide-up">
                     <form onSubmit={handleCreate} className="space-y-3">
                         <input
                             type="text"
@@ -104,7 +104,7 @@ export default function Sidebar({ rooms, activeRoom, onSelectRoom, onRoomCreated
 
             {/* Join Modal */}
             {showJoin && (
-                <div className="p-4 border-b border-dark-100 dark:border-dark-800 bg-hive-50/50 dark:bg-hive-900/10 animate-slide-up">
+                <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-brand-50/50 dark:bg-brand-900/10 animate-slide-up">
                     <form onSubmit={handleJoin} className="space-y-3">
                         <input
                             type="text"
@@ -131,10 +131,12 @@ export default function Sidebar({ rooms, activeRoom, onSelectRoom, onRoomCreated
             {/* Room List */}
             <div className="flex-1 overflow-y-auto p-3 space-y-1">
                 {rooms.length === 0 ? (
-                    <div className="text-center py-10 text-dark-400 dark:text-dark-500">
-                        <div className="text-4xl mb-3">🏠</div>
+                    <div className="text-center py-10 text-slate-400 dark:text-slate-500">
+                        <div className="w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center mx-auto mb-3">
+                            <span className="text-slate-400 text-sm">R</span>
+                        </div>
                         <p className="text-sm">No rooms yet</p>
-                        <p className="text-xs mt-1">Create or join a room to start studying</p>
+                        <p className="text-xs mt-1">Create or join a room to start</p>
                     </div>
                 ) : (
                     rooms.map(room => (
@@ -146,8 +148,8 @@ export default function Sidebar({ rooms, activeRoom, onSelectRoom, onRoomCreated
                             <div className="flex-1 min-w-0">
                                 <p className="font-medium text-sm truncate">{room.name}</p>
                                 <div className="flex items-center gap-2 mt-0.5">
-                                    <span className="badge-honey text-[10px]">{room.subject}</span>
-                                    <span className="text-[10px] text-dark-400 dark:text-dark-500">
+                                    <span className="badge-brand text-[10px]">{room.subject}</span>
+                                    <span className="text-[10px] text-slate-400 dark:text-slate-500">
                                         {room.participants?.length || 0} members
                                     </span>
                                 </div>

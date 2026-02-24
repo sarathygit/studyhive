@@ -66,14 +66,13 @@ export default function Chat({ roomId }) {
 
     const isOwnMessage = (msg) => msg.sender?._id === user?._id;
 
-    // Group messages by sender
     const shouldShowSender = (messages, index) => {
         if (index === 0) return true;
         const prev = messages[index - 1];
         const curr = messages[index];
         if (prev.sender?._id !== curr.sender?._id) return true;
         const timeDiff = new Date(curr.timestamp) - new Date(prev.timestamp);
-        return timeDiff > 300000; // 5 minutes
+        return timeDiff > 300000;
     };
 
     return (
@@ -82,11 +81,13 @@ export default function Chat({ roomId }) {
             <div ref={chatRef} className="flex-1 overflow-y-auto p-4 space-y-1">
                 {loading ? (
                     <div className="flex items-center justify-center h-full">
-                        <div className="w-8 h-8 border-3 border-honey-400 border-t-transparent rounded-full animate-spin" />
+                        <div className="w-8 h-8 border-3 border-brand-400 border-t-transparent rounded-full animate-spin" />
                     </div>
                 ) : messages.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center h-full text-dark-400 dark:text-dark-500">
-                        <span className="text-4xl mb-3">💬</span>
+                    <div className="flex flex-col items-center justify-center h-full text-slate-400 dark:text-slate-500">
+                        <div className="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center mb-3">
+                            <span className="text-slate-400 text-sm">Chat</span>
+                        </div>
                         <p className="text-sm">No messages yet</p>
                         <p className="text-xs mt-1">Start the conversation!</p>
                     </div>
@@ -95,20 +96,20 @@ export default function Chat({ roomId }) {
                         <div key={msg._id || i} className={`animate-fade-in ${isOwnMessage(msg) ? 'flex justify-end' : ''}`}>
                             {shouldShowSender(messages, i) && !isOwnMessage(msg) && (
                                 <div className="flex items-center gap-2 mb-1 mt-3">
-                                    <div className="w-6 h-6 rounded-full gradient-bg flex items-center justify-center text-white text-[10px] font-bold">
+                                    <div className="w-6 h-6 rounded-full bg-brand-600 flex items-center justify-center text-white text-[10px] font-semibold">
                                         {msg.sender?.username?.[0]?.toUpperCase()}
                                     </div>
-                                    <span className="text-xs font-medium text-dark-500 dark:text-dark-400">
+                                    <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
                                         {msg.sender?.username}
                                     </span>
-                                    <span className="text-[10px] text-dark-400 dark:text-dark-500">
+                                    <span className="text-[10px] text-slate-400 dark:text-slate-500">
                                         {formatTime(msg.timestamp)}
                                     </span>
                                 </div>
                             )}
                             <div className={`max-w-[80%] px-4 py-2 rounded-2xl text-sm ${isOwnMessage(msg)
-                                    ? 'bg-gradient-to-r from-honey-500 to-primary-500 text-white rounded-br-md'
-                                    : 'bg-dark-100 dark:bg-dark-800 text-dark-800 dark:text-dark-200 rounded-bl-md ml-8'
+                                ? 'bg-brand-600 text-white rounded-br-md'
+                                : 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 rounded-bl-md ml-8'
                                 }`}>
                                 {msg.content}
                                 {isOwnMessage(msg) && (
@@ -122,7 +123,7 @@ export default function Chat({ roomId }) {
             </div>
 
             {/* Input */}
-            <form onSubmit={handleSend} className="p-4 border-t border-dark-100 dark:border-dark-800">
+            <form onSubmit={handleSend} className="p-4 border-t border-slate-200 dark:border-slate-800">
                 <div className="flex gap-2">
                     <input
                         type="text"

@@ -4,17 +4,17 @@
 
 @layer base {
   * {
-    @apply border-dark-200 dark:border-dark-700;
+    @apply border-slate-200 dark:border-slate-700;
   }
 
   body {
-    @apply bg-gray-50 text-dark-900 dark:bg-dark-950 dark:text-gray-100 font-sans antialiased;
+    @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased;
     overflow-x: hidden;
   }
 
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
   }
 
   ::-webkit-scrollbar-track {
@@ -22,84 +22,71 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-dark-300 dark:bg-dark-600 rounded-full;
+    @apply bg-slate-300 dark:bg-slate-600 rounded-full;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-dark-400 dark:bg-dark-500;
+    @apply bg-slate-400 dark:bg-slate-500;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply px-5 py-2.5 bg-gradient-to-r from-honey-500 to-primary-500 text-white font-semibold rounded-xl
-           hover:from-honey-600 hover:to-primary-600 transition-all duration-300 shadow-lg shadow-honey-500/25
-           hover:shadow-xl hover:shadow-honey-500/30 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply px-5 py-2.5 bg-brand-600 text-white font-medium rounded-xl hover:bg-brand-700 transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   .btn-secondary {
-    @apply px-5 py-2.5 bg-dark-100 dark:bg-dark-800 text-dark-700 dark:text-dark-200 font-medium rounded-xl
-           hover:bg-dark-200 dark:hover:bg-dark-700 transition-all duration-300 active:scale-[0.98];
+    @apply px-5 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-medium rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-200 active:scale-[0.98];
   }
 
   .btn-ghost {
-    @apply px-4 py-2 text-dark-600 dark:text-dark-300 font-medium rounded-xl
-           hover:bg-dark-100 dark:hover:bg-dark-800 transition-all duration-200;
+    @apply px-4 py-2 text-slate-600 dark:text-slate-300 font-medium rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200;
   }
 
   .card {
-    @apply bg-white dark:bg-dark-900 rounded-2xl border border-dark-100 dark:border-dark-800
-           shadow-sm hover:shadow-md transition-shadow duration-300;
+    @apply bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-card hover:shadow-card-hover transition-shadow duration-200;
   }
 
   .card-glass {
-    @apply bg-white/70 dark:bg-dark-900/70 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-dark-700/50
-           shadow-lg;
+    @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-slate-200/60 dark:border-slate-700/50 shadow-card;
   }
 
   .input-field {
-    @apply w-full px-4 py-3 bg-dark-50 dark:bg-dark-800 border border-dark-200 dark:border-dark-700
-           rounded-xl text-dark-900 dark:text-gray-100 placeholder-dark-400 dark:placeholder-dark-500
-           focus:outline-none focus:ring-2 focus:ring-honey-400 focus:border-transparent
-           transition-all duration-200;
+    @apply w-full px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-all duration-200;
   }
 
   .badge {
     @apply inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full;
   }
 
-  .badge-honey {
-    @apply badge bg-honey-100 dark:bg-honey-900/30 text-honey-700 dark:text-honey-400;
+  .badge-brand {
+    @apply badge bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-400;
   }
 
-  .badge-hive {
-    @apply badge bg-hive-100 dark:bg-hive-900/30 text-hive-700 dark:text-hive-400;
+  .badge-accent {
+    @apply badge bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400;
   }
 
   .sidebar-item {
-    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-dark-600 dark:text-dark-300
-           hover:bg-dark-100 dark:hover:bg-dark-800 hover:text-dark-900 dark:hover:text-white
-           transition-all duration-200 cursor-pointer;
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-all duration-200 cursor-pointer;
   }
 
   .sidebar-item-active {
-    @apply sidebar-item bg-honey-50 dark:bg-honey-900/20 text-honey-700 dark:text-honey-400
-           hover:bg-honey-100 dark:hover:bg-honey-900/30;
+    @apply sidebar-item bg-brand-50 dark:bg-brand-900/20 text-brand-700 dark:text-brand-400 hover:bg-brand-100 dark:hover:bg-brand-900/30;
   }
 
   .tooltip {
-    @apply absolute z-50 px-2 py-1 text-xs font-medium text-white bg-dark-800 dark:bg-dark-600
-           rounded-lg shadow-lg whitespace-nowrap;
+    @apply absolute z-50 px-2 py-1 text-xs font-medium text-white bg-slate-800 dark:bg-slate-600 rounded-lg shadow-lg whitespace-nowrap;
   }
 }
 
 @layer utilities {
   .gradient-text {
-    @apply bg-gradient-to-r from-honey-500 to-primary-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-brand-600 to-brand-400 bg-clip-text text-transparent;
   }
 
   .gradient-bg {
-    @apply bg-gradient-to-br from-honey-400 via-primary-500 to-hive-500;
+    @apply bg-gradient-to-br from-brand-600 via-brand-700 to-brand-900;
   }
 
   .glass {

@@ -53,7 +53,7 @@ export default function Dashboard() {
     };
 
     return (
-        <div className="h-screen flex flex-col bg-gray-50 dark:bg-dark-950">
+        <div className="h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
             <Navbar />
             <div className="flex-1 flex overflow-hidden">
                 {/* Left Sidebar */}
@@ -68,27 +68,27 @@ export default function Dashboard() {
                 <div className="flex-1 flex flex-col overflow-y-auto">
                     {/* Welcome Banner */}
                     <div className="p-6">
-                        <div className="card-glass p-8 gradient-bg text-white">
+                        <div className="rounded-2xl p-8 gradient-bg text-white">
                             <h2 className="text-3xl font-display font-bold mb-2">
-                                Welcome back, {user?.username}! 👋
+                                Welcome back, {user?.username}
                             </h2>
                             <p className="text-white/80 text-lg mb-6">
                                 Ready to study? Create or join a room to get started.
                             </p>
                             <div className="flex items-center gap-4 flex-wrap">
-                                <div className="bg-white/20 backdrop-blur-sm rounded-xl px-5 py-3">
+                                <div className="bg-white/15 backdrop-blur-sm rounded-xl px-5 py-3">
                                     <p className="text-2xl font-bold">{user?.focusScore || 0}</p>
                                     <p className="text-xs text-white/70">Focus Score</p>
                                 </div>
-                                <div className="bg-white/20 backdrop-blur-sm rounded-xl px-5 py-3">
-                                    <p className="text-2xl font-bold">🔥 {user?.streak || 0}</p>
+                                <div className="bg-white/15 backdrop-blur-sm rounded-xl px-5 py-3">
+                                    <p className="text-2xl font-bold">{user?.streak || 0}</p>
                                     <p className="text-xs text-white/70">Day Streak</p>
                                 </div>
-                                <div className="bg-white/20 backdrop-blur-sm rounded-xl px-5 py-3">
+                                <div className="bg-white/15 backdrop-blur-sm rounded-xl px-5 py-3">
                                     <p className="text-2xl font-bold">{rooms.length}</p>
                                     <p className="text-xs text-white/70">Study Rooms</p>
                                 </div>
-                                <div className="bg-white/20 backdrop-blur-sm rounded-xl px-5 py-3">
+                                <div className="bg-white/15 backdrop-blur-sm rounded-xl px-5 py-3">
                                     <p className="text-2xl font-bold">{user?.badges?.length || 0}</p>
                                     <p className="text-xs text-white/70">Badges Earned</p>
                                 </div>
@@ -99,33 +99,33 @@ export default function Dashboard() {
                     {/* Quick Actions & Discover */}
                     <div className="px-6 pb-6">
                         <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-lg font-display font-bold text-dark-900 dark:text-white">
-                                🧭 Discover Rooms
+                            <h3 className="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wider">
+                                Discover Rooms
                             </h3>
                             <button onClick={handleDiscover} className="btn-ghost text-sm">
-                                Browse All →
+                                Browse All
                             </button>
                         </div>
 
                         {showDiscover && (
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 animate-fade-in">
                                 {discoverRooms.length === 0 ? (
-                                    <p className="text-dark-400 dark:text-dark-500 text-sm col-span-3 text-center py-8">
+                                    <p className="text-slate-400 dark:text-slate-500 text-sm col-span-3 text-center py-8">
                                         No rooms available yet. Create the first one!
                                     </p>
                                 ) : (
                                     discoverRooms.map(room => (
-                                        <div key={room._id} className="card p-4 hover:border-honey-300 dark:hover:border-honey-700 transition-colors cursor-pointer"
+                                        <div key={room._id} className="card p-4 hover:border-brand-300 dark:hover:border-brand-700 transition-colors cursor-pointer"
                                             onClick={() => handleSelectRoom(room)}>
-                                            <p className="font-medium text-sm text-dark-900 dark:text-white">{room.name}</p>
+                                            <p className="font-medium text-sm text-slate-900 dark:text-white">{room.name}</p>
                                             <div className="flex items-center gap-2 mt-2">
-                                                <span className="badge-honey text-[10px]">{room.subject}</span>
-                                                <span className="text-[10px] text-dark-400">{room.participants?.length || 0} members</span>
+                                                <span className="badge-brand text-[10px]">{room.subject}</span>
+                                                <span className="text-[10px] text-slate-400">{room.participants?.length || 0} members</span>
                                             </div>
                                             {room.tags?.length > 0 && (
                                                 <div className="flex flex-wrap gap-1 mt-2">
                                                     {room.tags.map((tag, i) => (
-                                                        <span key={i} className="badge-hive text-[10px]">{tag}</span>
+                                                        <span key={i} className="badge-accent text-[10px]">{tag}</span>
                                                     ))}
                                                 </div>
                                             )}
@@ -138,28 +138,28 @@ export default function Dashboard() {
                         {/* Your Rooms Grid */}
                         {rooms.length > 0 && (
                             <>
-                                <h3 className="text-lg font-display font-bold text-dark-900 dark:text-white mb-4">
-                                    📚 Your Rooms
+                                <h3 className="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wider mb-4">
+                                    Your Rooms
                                 </h3>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                     {rooms.map(room => (
                                         <div
                                             key={room._id}
                                             onClick={() => handleSelectRoom(room)}
-                                            className="card p-5 cursor-pointer hover:border-honey-300 dark:hover:border-honey-700 transition-all hover:shadow-lg group"
+                                            className="card p-5 cursor-pointer hover:border-brand-300 dark:hover:border-brand-700 transition-all hover:shadow-card-hover group"
                                         >
                                             <div className="flex items-start justify-between">
                                                 <div>
-                                                    <p className="font-display font-semibold text-dark-900 dark:text-white group-hover:text-honey-600 dark:group-hover:text-honey-400 transition-colors">
+                                                    <p className="font-display font-semibold text-slate-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
                                                         {room.name}
                                                     </p>
-                                                    <span className="badge-honey text-[10px] mt-1">{room.subject}</span>
+                                                    <span className="badge-brand text-[10px] mt-1">{room.subject}</span>
                                                 </div>
-                                                <span className="text-xs text-dark-400 dark:text-dark-500">
-                                                    {room.participants?.length || 0} 👥
+                                                <span className="text-xs text-slate-400 dark:text-slate-500">
+                                                    {room.participants?.length || 0} members
                                                 </span>
                                             </div>
-                                            <p className="text-xs text-dark-400 dark:text-dark-500 mt-3 font-mono">
+                                            <p className="text-xs text-slate-400 dark:text-slate-500 mt-3 font-mono">
                                                 Code: {room.code}
                                             </p>
                                         </div>
@@ -171,7 +171,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* Right Panel */}
-                <div className="hidden xl:block w-80 border-l border-dark-100 dark:border-dark-800 bg-white dark:bg-dark-900 overflow-y-auto p-4 space-y-4">
+                <div className="hidden xl:block w-80 border-l border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-y-auto p-4 space-y-4">
                     <PomodoroTimer />
                     <FocusStats />
                     <Leaderboard />
