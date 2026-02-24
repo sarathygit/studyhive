@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import api from '../utils/api';
 
+const API_BASE = import.meta.env.VITE_API_URL || '';
+
 export default function NotesPanel({ roomId }) {
     const [notes, setNotes] = useState([]);
     const [showUpload, setShowUpload] = useState(false);
@@ -64,6 +66,15 @@ export default function NotesPanel({ roomId }) {
         if (type?.includes('image')) return '🖼️';
         if (type?.includes('word') || type?.includes('document')) return '📝';
         return '📎';
+    };
+
+    // Build the full file download URL pointing to the backend server
+    const getFileUrl = (fileUrl) => {
+        if (!fileUrl) return '#';
+        // If already a full URL, return as-is
+        if (fileUrl.startsWith('http')) return fileUrl;
+        // Prepend the backend base URL
+        return `${API_BASE}${fileUrl}`;
     };
 
     return (
@@ -154,7 +165,7 @@ export default function NotesPanel({ roomId }) {
                             )}
                             {note.fileUrl && (
                                 <a
-                                    href={note.fileUrl}
+                                    href={getFileUrl(note.fileUrl)}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center gap-1.5 mt-2 px-3 py-1.5 bg-hive-50 dark:bg-hive-900/20 rounded-lg text-xs font-medium text-hive-600 dark:text-hive-400 hover:bg-hive-100 dark:hover:bg-hive-900/30 transition-colors"
