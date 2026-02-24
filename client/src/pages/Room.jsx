@@ -10,7 +10,7 @@ import PomodoroTimer from '../components/PomodoroTimer';
 import FocusStats from '../components/FocusStats';
 import Leaderboard from '../components/Leaderboard';
 import QuizGenerator from '../components/QuizGenerator';
-import ChatSummary from '../components/ChatSummary';
+import DocSummarizer from '../components/DocSummarizer';
 import NotesPanel from '../components/NotesPanel';
 import Scheduler from '../components/Scheduler';
 import VoiceCall from '../components/VoiceCall';
@@ -20,7 +20,7 @@ const TABS = [
     { id: 'whiteboard', label: '🎨 Whiteboard', icon: '🎨' },
     { id: 'notes', label: '📒 Notes', icon: '📒' },
     { id: 'quiz', label: '🧠 Quiz', icon: '🧠' },
-    { id: 'summary', label: '📋 Summary', icon: '📋' },
+    { id: 'summary', label: '📄 Summarizer', icon: '📄' },
     { id: 'schedule', label: '📅 Schedule', icon: '📅' },
 ];
 
@@ -206,7 +206,7 @@ export default function Room() {
                         {activeTab === 'whiteboard' && <Whiteboard roomId={roomId} />}
                         {activeTab === 'notes' && <NotesPanel roomId={roomId} />}
                         {activeTab === 'quiz' && <QuizGenerator roomId={roomId} />}
-                        {activeTab === 'summary' && <ChatSummary roomId={roomId} messages={messages} />}
+                        {activeTab === 'summary' && <DocSummarizer roomId={roomId} />}
                         {activeTab === 'schedule' && <Scheduler roomId={roomId} />}
                     </div>
                 </div>
