@@ -35,10 +35,19 @@ const upload = multer({
 // ─── Text Extraction Helpers ───────────────────────────────
 
 async function extractFromPDF(filePath) {
-    const pdfParse = require('pdf-parse');
+    const pdfParseModule = require('pdf-parse');
     const buffer = fs.readFileSync(filePath);
-    const data = await pdfParse(buffer);
-    return data.text;
+    // Handle both v1 (default function) and v2 (PDFParse class) APIs
+    if (typeof pdfParseModule === 'function') {
+        const data = await pdfParseModule(buffer);
+        return data.text;
+    } else if (pdfParseModule.PDFParse) {
+        const parser = new pdfParseModule.PDFParse();
+        const data = await parser.loadPDF(buffer);
+        return data.text || '';
+    } else {
+        throw new Error('Unsupported pdf-parse version');
+    }
 }
 
 async function extractFromDocx(filePath) {
