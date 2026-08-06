@@ -1,6 +1,11 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { getErrorMessage } from '../utils/api';
+
+// The backend sleeps on the free tier, so the first request after a quiet spell
+// can take ~50s. Tell the user that rather than leaving them with a dead spinner.
+const SLOW_REQUEST_HINT_MS = 5000;
 
 export default function Login() {
     const { login } = useAuth();
@@ -8,16 +13,24 @@ export default function Login() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [slow, setSlow] = useState(false);
+    const slowTimer = useRef(null);
+
+    useEffect(() => () => clearTimeout(slowTimer.current), []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setLoading(true);
+        setSlow(false);
+        slowTimer.current = setTimeout(() => setSlow(true), SLOW_REQUEST_HINT_MS);
         try {
             await login(email, password);
         } catch (err) {
-            setError(err.response?.data?.message || 'Login failed');
+            setError(getErrorMessage(err, 'Login failed'));
         } finally {
+            clearTimeout(slowTimer.current);
+            setSlow(false);
             setLoading(false);
         }
     };
@@ -126,6 +139,12 @@ export default function Login() {
                                 </>
                             ) : 'Sign In'}
                         </button>
+
+                        {slow && (
+                            <p className="text-center text-sm text-slate-500 dark:text-slate-400 animate-fade-in">
+                                Waking up the server — this can take up to a minute on the first try.
+                            </p>
+                        )}
                     </form>
 
                     <p className="mt-6 text-center text-slate-500 dark:text-slate-400">

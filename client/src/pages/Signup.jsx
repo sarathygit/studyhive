@@ -1,6 +1,10 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { getErrorMessage } from '../utils/api';
+
+// See Login.jsx — free-tier cold starts can take ~50s.
+const SLOW_REQUEST_HINT_MS = 5000;
 
 const SUBJECT_OPTIONS = [
     'Mathematics', 'Physics', 'Chemistry', 'Biology', 'Computer Science',
@@ -13,6 +17,10 @@ export default function Signup() {
     const [subjects, setSubjects] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [slow, setSlow] = useState(false);
+    const slowTimer = useRef(null);
+
+    useEffect(() => () => clearTimeout(slowTimer.current), []);
 
     const toggleSubject = (subject) => {
         setSubjects(prev =>
@@ -32,11 +40,15 @@ export default function Signup() {
         }
 
         setLoading(true);
+        setSlow(false);
+        slowTimer.current = setTimeout(() => setSlow(true), SLOW_REQUEST_HINT_MS);
         try {
             await signup(form.username, form.email, form.password, subjects);
         } catch (err) {
-            setError(err.response?.data?.message || 'Signup failed');
+            setError(getErrorMessage(err, 'Signup failed'));
         } finally {
+            clearTimeout(slowTimer.current);
+            setSlow(false);
             setLoading(false);
         }
     };
@@ -166,6 +178,12 @@ export default function Signup() {
                                 </>
                             ) : 'Create Account'}
                         </button>
+
+                        {slow && (
+                            <p className="text-center text-sm text-slate-500 dark:text-slate-400 animate-fade-in">
+                                Waking up the server — this can take up to a minute on the first try.
+                            </p>
+                        )}
                     </form>
 
                     <p className="mt-6 text-center text-slate-500 dark:text-slate-400">
