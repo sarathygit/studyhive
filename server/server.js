@@ -12,9 +12,10 @@ const setupSocket = require('./socket');
 const app = express();
 const server = http.createServer(app);
 
-// Allowed origins
+// Allowed origins. CLIENT_URL may be a comma-separated list.
 const allowedOrigins = [
-    process.env.CLIENT_URL || 'http://localhost:5173',
+    ...(process.env.CLIENT_URL || 'http://localhost:5173').split(',').map(o => o.trim()),
+    'http://localhost:5173',
     'https://studyhive-five.vercel.app'
 ].filter(Boolean);
 
@@ -29,11 +30,12 @@ const io = new Server(server, {
 // Middleware
 app.use(cors({
     origin: function (origin, callback) {
+        // No origin: same-origin requests, curl, health checks.
         if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(null, true); // Allow all in dev; tighten for production
+            return callback(null, true);
         }
+        console.warn(`CORS: blocked origin ${origin}`);
+        callback(new Error('Not allowed by CORS'));
     },
     credentials: true
 }));
@@ -61,6 +63,16 @@ app.use('/api/focus', require('./routes/focus'));
 app.use('/api/notes', require('./routes/notes'));
 app.use('/api/ai', require('./routes/ai'));
 app.use('/api/sessions', require('./routes/sessions'));
+
+// Error handler. Placed after the routes so it also catches the CORS rejection
+// thrown upstream, which would otherwise surface as an opaque 500.
+app.use((err, req, res, next) => {
+    if (err?.message === 'Not allowed by CORS') {
+        return res.status(403).json({ message: 'Origin not allowed' });
+    }
+    console.error('Unhandled error:', err);
+    res.status(500).json({ message: 'Server error' });
+});
 
 // Socket.io handlers
 setupSocket(io);

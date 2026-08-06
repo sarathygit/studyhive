@@ -52,10 +52,10 @@ export default function Chat({ roomId }) {
         e.preventDefault();
         if (!input.trim() || !socket) return;
 
+        // Sender is taken from the authenticated socket on the server.
         socket.emit('sendMessage', {
             roomId,
-            content: input.trim(),
-            sender: user
+            content: input.trim()
         });
         setInput('');
     };

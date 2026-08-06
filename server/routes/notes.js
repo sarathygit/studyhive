@@ -3,6 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const Note = require('../models/Note');
 const auth = require('../middleware/auth');
+const roomMember = require('../middleware/roomAccess');
 const router = express.Router();
 
 // Configure multer for file uploads
@@ -31,7 +32,7 @@ const upload = multer({
 });
 
 // POST /api/notes - Upload a note
-router.post('/', auth, upload.single('file'), async (req, res) => {
+router.post('/', auth, upload.single('file'), roomMember(req => req.body.roomId), async (req, res) => {
     try {
         const { title, content, roomId } = req.body;
         const noteData = {
@@ -57,7 +58,7 @@ router.post('/', auth, upload.single('file'), async (req, res) => {
 });
 
 // GET /api/notes/:roomId
-router.get('/:roomId', auth, async (req, res) => {
+router.get('/:roomId', auth, roomMember(req => req.params.roomId), async (req, res) => {
     try {
         const notes = await Note.find({ room: req.params.roomId })
             .populate('user', 'username avatar')

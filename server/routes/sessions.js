@@ -1,10 +1,12 @@
 const express = require('express');
 const StudySession = require('../models/StudySession');
+const Room = require('../models/Room');
 const auth = require('../middleware/auth');
+const roomMember = require('../middleware/roomAccess');
 const router = express.Router();
 
 // POST /api/sessions - Create a study session
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, roomMember(req => req.body.roomId), async (req, res) => {
     try {
         const { roomId, title, description, scheduledAt, duration } = req.body;
         const session = new StudySession({
@@ -25,7 +27,7 @@ router.post('/', auth, async (req, res) => {
 });
 
 // GET /api/sessions/:roomId
-router.get('/:roomId', auth, async (req, res) => {
+router.get('/:roomId', auth, roomMember(req => req.params.roomId), async (req, res) => {
     try {
         const sessions = await StudySession.find({
             room: req.params.roomId,
@@ -44,6 +46,12 @@ router.post('/:id/join', auth, async (req, res) => {
     try {
         const session = await StudySession.findById(req.params.id);
         if (!session) return res.status(404).json({ message: 'Session not found' });
+
+        // Only members of the session's room may join it.
+        const room = await Room.findById(session.room).select('participants');
+        if (!room || !room.participants.some(p => p.equals(req.user._id))) {
+            return res.status(403).json({ message: 'You are not a member of this room' });
+        }
 
         if (!session.participants.includes(req.user._id)) {
             session.participants.push(req.user._id);

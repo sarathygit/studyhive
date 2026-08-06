@@ -14,11 +14,22 @@ export function SocketProvider({ children }) {
         if (user) {
             const serverUrl = import.meta.env.VITE_API_URL || window.location.origin;
             const newSocket = io(serverUrl, {
-                transports: ['websocket', 'polling']
+                transports: ['websocket', 'polling'],
+                // The server verifies this during the handshake; without it the
+                // connection is rejected and identity can't be spoofed.
+                auth: { token: localStorage.getItem('studyhive_token') }
             });
 
             newSocket.on('connect', () => {
                 console.log('Socket connected:', newSocket.id);
+            });
+
+            newSocket.on('connect_error', (err) => {
+                console.error('Socket connection failed:', err.message);
+            });
+
+            newSocket.on('roomError', ({ message }) => {
+                addNotification({ type: 'error', message, id: Date.now() });
             });
 
             newSocket.on('roomUsers', (users) => {
@@ -55,7 +66,8 @@ export function SocketProvider({ children }) {
 
     const joinRoom = (roomId) => {
         if (socket && user) {
-            socket.emit('joinRoom', { roomId, user });
+            // Identity comes from the authenticated socket, not this payload.
+            socket.emit('joinRoom', { roomId });
         }
     };
 

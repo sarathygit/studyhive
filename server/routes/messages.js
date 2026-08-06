@@ -1,10 +1,11 @@
 const express = require('express');
 const Message = require('../models/Message');
 const auth = require('../middleware/auth');
+const roomMember = require('../middleware/roomAccess');
 const router = express.Router();
 
 // GET /api/messages/:roomId
-router.get('/:roomId', auth, async (req, res) => {
+router.get('/:roomId', auth, roomMember(req => req.params.roomId), async (req, res) => {
     try {
         const { page = 1, limit = 50 } = req.query;
         const messages = await Message.find({ room: req.params.roomId })

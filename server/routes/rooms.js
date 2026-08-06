@@ -1,6 +1,7 @@
 const express = require('express');
 const Room = require('../models/Room');
 const auth = require('../middleware/auth');
+const roomMember = require('../middleware/roomAccess');
 const router = express.Router();
 
 // POST /api/rooms - Create a room
@@ -35,6 +36,8 @@ router.get('/', auth, async (req, res) => {
 });
 
 // GET /api/rooms/discover - Discover rooms by subject
+// Deliberately excludes `code`: the join code is a shareable secret, and
+// returning it here made every room joinable by anyone browsing the list.
 router.get('/discover', auth, async (req, res) => {
     try {
         const { subject } = req.query;
@@ -43,12 +46,38 @@ router.get('/discover', auth, async (req, res) => {
             query.subject = new RegExp(subject, 'i');
         }
         const rooms = await Room.find(query)
+            .select('-code')
             .populate('creator', 'username avatar')
             .sort('-createdAt')
             .limit(20);
         res.json(rooms);
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// POST /api/rooms/:id/join - Join a room discovered via the browse list.
+// Discover no longer exposes codes, so joining by id is how that flow works now.
+router.post('/:id/join', auth, async (req, res) => {
+    try {
+        const room = await Room.findOne({ _id: req.params.id, isActive: true });
+
+        if (!room) {
+            return res.status(404).json({ message: 'Room not found' });
+        }
+
+        if (!room.participants.some(p => p.equals(req.user._id))) {
+            if (room.participants.length >= room.maxParticipants) {
+                return res.status(400).json({ message: 'Room is full' });
+            }
+            room.participants.push(req.user._id);
+            await room.save();
+        }
+
+        await room.populate('creator participants', 'username avatar');
+        res.json(room);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
 
@@ -80,14 +109,11 @@ router.post('/join', auth, async (req, res) => {
     }
 });
 
-// GET /api/rooms/:id
-router.get('/:id', auth, async (req, res) => {
+// GET /api/rooms/:id - members only (the response includes the join code)
+router.get('/:id', auth, roomMember(req => req.params.id), async (req, res) => {
     try {
         const room = await Room.findById(req.params.id)
             .populate('creator participants', 'username avatar focusScore streak');
-        if (!room) {
-            return res.status(404).json({ message: 'Room not found' });
-        }
         res.json(room);
     } catch (error) {
         res.status(500).json({ message: 'Server error' });

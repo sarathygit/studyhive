@@ -47,6 +47,18 @@ export default function Dashboard() {
         navigate(`/room/${room._id}`);
     };
 
+    // Rooms from Discover aren't joined yet, and room pages are members-only now,
+    // so join first and add it to the sidebar before navigating.
+    const handleJoinDiscovered = async (room) => {
+        try {
+            const res = await api.post(`/rooms/${room._id}/join`);
+            setRooms(prev => prev.some(r => r._id === res.data._id) ? prev : [res.data, ...prev]);
+            handleSelectRoom(res.data);
+        } catch (err) {
+            console.error('Failed to join room', err);
+        }
+    };
+
     const handleRoomCreated = (room) => {
         setRooms(prev => [room, ...prev]);
         handleSelectRoom(room);
@@ -116,7 +128,7 @@ export default function Dashboard() {
                                 ) : (
                                     discoverRooms.map(room => (
                                         <div key={room._id} className="card p-4 hover:border-brand-300 dark:hover:border-brand-700 transition-colors cursor-pointer"
-                                            onClick={() => handleSelectRoom(room)}>
+                                            onClick={() => handleJoinDiscovered(room)}>
                                             <p className="font-medium text-sm text-slate-900 dark:text-white">{room.name}</p>
                                             <div className="flex items-center gap-2 mt-2">
                                                 <span className="badge-brand text-[10px]">{room.subject}</span>

@@ -4,23 +4,47 @@ const User = require('../models/User');
 const auth = require('../middleware/auth');
 const router = express.Router();
 
+// A single Pomodoro is 25 minutes; allow headroom without letting a crafted
+// request post an arbitrary number straight to the top of the leaderboard.
+const MAX_SESSION_MINUTES = 120;
+const MAX_DAILY_MINUTES = 16 * 60;
+
 // POST /api/focus - Record a focus session
 router.post('/', auth, async (req, res) => {
     try {
         const { duration, roomId, completed } = req.body;
 
+        const minutes = Number(duration);
+        if (!Number.isInteger(minutes) || minutes < 1 || minutes > MAX_SESSION_MINUTES) {
+            return res.status(400).json({
+                message: `Duration must be a whole number of minutes between 1 and ${MAX_SESSION_MINUTES}`
+            });
+        }
+
+        // Cap the daily total so the endpoint can't be looped for free points.
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0);
+        const [today] = await FocusSession.aggregate([
+            { $match: { user: req.user._id, date: { $gte: startOfDay } } },
+            { $group: { _id: null, total: { $sum: '$duration' } } }
+        ]);
+
+        if ((today?.total || 0) + minutes > MAX_DAILY_MINUTES) {
+            return res.status(429).json({ message: 'Daily focus time limit reached' });
+        }
+
         const session = new FocusSession({
             user: req.user._id,
-            room: roomId,
-            duration,
+            room: roomId || undefined,
+            duration: minutes,
             completed: completed !== false
         });
         await session.save();
 
         // Update user focus stats
         const user = await User.findById(req.user._id);
-        user.focusScore += Math.floor(duration / 5);
-        user.totalFocusTime += duration;
+        user.focusScore += Math.floor(minutes / 5);
+        user.totalFocusTime += minutes;
 
         // Check for badges
         if (user.totalFocusTime >= 60 && !user.badges.find(b => b.name === 'First Hour')) {
